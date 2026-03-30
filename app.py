@@ -30,7 +30,7 @@ y = data[target]
 @st.cache_resource
 def train_models():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
+
     # Gradient Boosting
     param_dist_gb = {
         'n_estimators': [100, 200, 300, 400, 500],
@@ -45,7 +45,7 @@ def train_models():
     random_search_gb = RandomizedSearchCV(gb, param_dist_gb, n_iter=50, cv=5, scoring='neg_mean_squared_error', n_jobs=-1, random_state=42, verbose=0)
     random_search_gb.fit(X_train, y_train)
     best_gb = random_search_gb.best_estimator_
-    
+
     # XGBoost
     param_dist_xgb = {
         'n_estimators': [100, 200, 300, 500],
@@ -62,7 +62,7 @@ def train_models():
     random_search_xgb = RandomizedSearchCV(xgb_model, param_dist_xgb, n_iter=50, cv=5, scoring='neg_mean_squared_error', n_jobs=-1, random_state=42, verbose=0)
     random_search_xgb.fit(X_train, y_train)
     best_xgb = random_search_xgb.best_estimator_
-    
+
     return best_gb, best_xgb, X_train, X_test, y_train, y_test
 
 gb_model, xgb_model, X_train, X_test, y_train, y_test = train_models()
@@ -121,4 +121,5 @@ if st.button("Predict Compressive Strength", type="primary"):
     st.markdown("---")
     st.success(f"✅ **Predicted Compressive Strength ({model_name})**")
     st.markdown(f"### {prediction:.2f} MPa")
+    st.caption("Model trained on the provided dataset – results are estimates only.")    st.markdown(f"### {prediction:.2f} MPa")
     st.caption("Model trained on the provided dataset – results are estimates only.")
